@@ -92,8 +92,10 @@ app.get('*', function(req, res, next) {
 	if(stat.isDirectory()) {
 		
 		var files = _.chain(fs.readdirSync(dir)).filter(function(v) {
-			var stat = fs.statSync(dir + '/' + v);
-			return stat.isDirectory() || (stat.isFile() && is_markdown(v));
+		  if (v !== '.git') {
+			  var stat = fs.statSync(dir + '/' + v);
+			  return stat.isDirectory() || (stat.isFile() && is_markdown(v));
+		  }
 		}).map(function(v) {
 			return {
 				url: base + '/' + v,
